@@ -35,7 +35,7 @@
             <span class="sidebar-link-icon">🏠</span>
             Home
         </a>
-        <a href="#" class="sidebar-link">
+        <a href="search" class="sidebar-link">
             <span class="sidebar-link-icon">🔍</span>
             Search
         </a>
@@ -73,12 +73,13 @@
     <br>
     <br>
     <header class="header-container">
-      <div class="search-bar" style="width: 390px;">
-          <input type="search" placeholder="What do you want to listen to?" aria-label="Search">
-          <button type="submit" aria-label="Search">
-              🔍
-          </button>
-      </div>
+      <form action="search" method="get">
+        <div class="search-bar" style="width: 390px;">
+            <input type="search" placeholder="What do you want to listen to?" name="query" aria-label="Search">
+            <button type="submit" aria-label="Search">
+                🔍
+            </button>
+        </div></form>
     </header>
     
     <!-- Popular Tracks Section -->
@@ -87,17 +88,19 @@
       <h2 class="text-2xl font-bold mb-4">Search Results</h2>
       <div class="divide-y divide-gray-800">
         <!-- Single Track Row -->
+         {% for result in results %}
         <div class="flex justify-between items-center py-3">
           <div class="flex items-center space-x-4">
-            <img src="https://i.scdn.co/image/ab67616d00001e02963265801aa5c9740ad159b7" alt="Song Image" class="w-12 h-12">
+            <img src="{{result.image_url}}" alt="{{result}}" class="w-12 h-12">
             <div>
               <p class="text-base font-medium">Calm Down</p>
-              <p class="text-xs text-gray-400">Rema, Selena Gomez</p>
+              <p class="text-xs text-gray-400">{{result.music_directors}}</p>
             </div>
           </div>
           <div class="text-gray-400">1,182,474,314</div>
           <div class="text-gray-400">3:59</div>
         </div>
+        {% endfor %}
         <!-- Repeat for other tracks -->
       </div>
       <!-- <a href="#" class="text-green-500 text-sm">See more</a> -->

@@ -33,7 +33,7 @@
                 <span class="sidebar-link-icon">🏠</span>
                 Home
             </a>
-            <a href="{% url 'search' %}" class="sidebar-link">
+            <a href="#" class="sidebar-link">
                 <span class="sidebar-link-icon">🔍</span>
                 Search
             </a>
@@ -64,13 +64,12 @@
 
     <div style="margin-left:240px; padding:20px;">
         <header class="header-container">
-            <form action="search" method="get">
             <div class="search-bar" style="width: 390px;">
-                <input type="search" placeholder="What do you want to listen to?" name="query" aria-label="Search">
+                <input type="search" placeholder="What do you want to listen to?" aria-label="Search">
                 <button type="submit" aria-label="Search">
                     🔍
                 </button>
-            </div></form>
+            </div>
             <div class="search-title">Top Artists</div>
         </header>
 
@@ -153,12 +152,14 @@
 
           <div class="browse-all">
             <!-- Category Card -->
-            {% for albums in album %}
-            <a href="{% url 'songs' albums %}">
+            {% for song in songs %}
+            
+            <a href="{% url 'music' song %}">
             <div class="category-card">
-                <img src="{{albums.image_url}}" alt="{{albums}}">
-                <div class="category-title">{{albums}}</div>
+                <img src="{{album.image_url}}" alt="{{album}}">
+                <div class="category-title">{{song}}</div>
             </div></a>
+            
             {% endfor %}
             <!-- Repeat for each category -->
             <!-- ... other categories ... -->

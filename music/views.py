@@ -2,16 +2,47 @@ from django.shortcuts import render,redirect
 from django.contrib import messages,auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from .models import Albums,Songs
 
 # Create your views here.
 @login_required(login_url="login")
-def music(request):
-    return render(request,"music.html")
+def search(request):
+    query = request.GET["query"]
+    result=[]
+    if query:
+        result=Albums.objects.filter(album__icontains=query)
+    return render(request,"search.html",{"results":result})
+
+@login_required(login_url="login")
+def song_list(request,al):
+    album = Albums.objects.filter(album=al).first()
+    songs = Songs.objects.filter(album_id=al)
+    content = {
+        "album":album,
+        "songs":songs,
+    }
+    return render(request,"song_list.html",content)
+
+
+@login_required(login_url="login")
+def music(request,song_name):
+    songs = Songs.objects.filter(song_name=song_name).first()
+    album = songs.album_id
+    duration = songs.durations.replace("min","").strip()
+    songs.durations = duration
+    album = Albums.objects.filter(album=album).first()
+    content = {
+        "album":album,
+        "songs":songs,
+    }
+    return render(request,"music.html",content)
 
 
 @login_required(login_url="login")
 def index(request):
-    return render(request,"index.html")
+    album = Albums.objects.all()
+    content = {'album':album}
+    return render(request,"index.html",content)
 
 def login(request):
     if request.method == "POST":
