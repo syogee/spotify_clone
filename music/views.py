@@ -11,7 +11,9 @@ def search(request):
     result=[]
     if query:
         result=Albums.objects.filter(album__icontains=query)
-    return render(request,"search.html",{"results":result})
+        return render(request,"search.html",{"results":result})
+    else:
+        return render(request,"search.html")
 
 @login_required(login_url="login")
 def song_list(request,al):
