@@ -1,6 +1,8 @@
 from config import config
 import psycopg2
 import pandas as pd
+from pathlib import Path
+import os
 
 def connect(songs,albums):
     connection = None
@@ -53,8 +55,9 @@ def post(crusor,songs,albums,ab):
             print(f"{row['Album']}exist")
 
 if __name__ == "__main__":
-    file_1 = "songs.xlsx"
-    file_2 = "movies.xlsx"
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    file_1 = os.path.join(BASE_DIR,"songs.xlsx")
+    file_2 = os.path.join(BASE_DIR,"movies.xlsx")
     df1 = pd.read_excel(file_1)
     df2 = pd.read_excel(file_2)
         

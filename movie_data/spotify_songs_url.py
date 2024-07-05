@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup as bs4
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import pandas as pd
+from pathlib import Path
+import os
 
 # Disable SSL warnings (not recommended for production)
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -74,7 +76,9 @@ def song_details(params):
     # content.append(music)
 
 if __name__ == "__main__":
-    song = pd.read_excel("movie_url.xlsx",index_col=None)["movie"].to_list()
+    BASE_DIR = Path(__file__).resolve().parent
+    song_con = os.path.join(BASE_DIR,"movie_url.xlsx")
+    song = pd.read_excel(song_con,index_col=None)["movie"].to_list()
     movie = movie_details(song[:50])
 
     movies = pd.DataFrame(movie)
