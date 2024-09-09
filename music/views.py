@@ -3,14 +3,26 @@ from django.contrib import messages,auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Albums,Songs
+from django.db.models import Count
 
 # Create your views here.
+@login_required(login_url="login")
+def detail(request):
+    album = Albums.objects.count()
+    song = Songs.objects.filter(album_id__in=Albums.objects.all()).count()
+    print(song)
+    content = {
+        'album':album,
+        'song':song
+    }
+    return render(request,"details.html",context=content)
+
 @login_required(login_url="login")
 def search(request):
     query = request.GET["query"]
     result=[]
     if query:
-        result=Albums.objects.filter(album__icontains=query)
+        result=Albums.objects.annotate(no_songs=Count("song_name")).filter(album__icontains=query)
         return render(request,"search.html",{"results":result})
     else:
         return render(request,"search.html")
@@ -42,7 +54,7 @@ def music(request,song_name):
 
 @login_required(login_url="login")
 def index(request):
-    album = Albums.objects.all()
+    album = Albums.objects.annotate(no_song=Count("song_name")).all()
     content = {'album':album}
     return render(request,"index.html",content)
 
